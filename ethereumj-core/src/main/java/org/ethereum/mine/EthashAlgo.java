@@ -213,6 +213,7 @@ public class EthashAlgo {
         long nonce = startNonce;
         BigInteger target = valueOf(2).pow(256).divide(valueOf(difficulty));
         while (!Thread.currentThread().isInterrupted()) {
+            System.out.println("hello world");
             nonce++;
             Pair<byte[], byte[]> pair = hashimotoFull(fullSize, dataset, blockHeaderTruncHash, longToBytes(nonce));
             BigInteger h = new BigInteger(1, pair.getRight() /* ?? */);
