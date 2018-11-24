@@ -47,6 +47,8 @@ public class EthashMiner implements MinerIfc {
 
     @Override
     public ListenableFuture<MiningResult> mine(Block block) {
+        System.out.println("in mine function");
+        System.out.println(block);
         return fullMining ?
                 Ethash.getForBlock(config, block.getNumber(), listeners).mine(block, cpuThreads) :
                 Ethash.getForBlock(config, block.getNumber(), listeners).mineLight(block, cpuThreads);

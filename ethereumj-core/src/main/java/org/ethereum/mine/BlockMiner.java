@@ -273,10 +273,17 @@ public class BlockMiner {
                         .getConfigForBlock(miningBlock.getNumber())
                         .getMineAlgorithm(config);
                 localMiner.setListeners(listeners);
+                System.out.println("mine called here");
                 currentMiningTasks.add(localMiner.mine(cloneBlock(miningBlock)));
             }
 
+            System.out.println("current mining tasks");
+
+            System.out.println(currentMiningTasks);
+
             for (final ListenableFuture<MiningResult> task : currentMiningTasks) {
+                System.out.println("the task is ");
+                System.out.println(task);
                 task.addListener(() -> {
                     try {
                         // wow, block mined!

@@ -209,18 +209,24 @@ public class EthashAlgo {
         return mine(fullSize, dataset, blockHeaderTruncHash, difficulty, new Random().nextLong());
     }
 
-    public long mine(long fullSize, int[] dataset, byte[] blockHeaderTruncHash, long difficulty, long startNonce) {
-        System.out.println("mine function called");
-        long nonce = startNonce;
-        BigInteger target = valueOf(2).pow(256).divide(valueOf(difficulty));
-        while (!Thread.currentThread().isInterrupted()) {
-            //System.out.println("hello world");
-            nonce++;
-            Pair<byte[], byte[]> pair = hashimotoFull(fullSize, dataset, blockHeaderTruncHash, longToBytes(nonce));
-            BigInteger h = new BigInteger(1, pair.getRight() /* ?? */);
-            if (h.compareTo(target) < 0) break;
+    public long mine(long fullSize, int[] dataset, byte[] blockHeaderTruncHash, long difficulty, long startNonce)  {
+        System.out.println("mine function called where nonce is");
+        try {
+            Thread.sleep(2500);                 //1000 milliseconds is one second.
+        } catch(InterruptedException ex) {
+            Thread.currentThread().interrupt();
         }
-        return nonce;
+        return 0x0;
+//        long nonce = startNonce;
+//        BigInteger target = valueOf(2).pow(256).divide(valueOf(difficulty));
+//        while (!Thread.currentThread().isInterrupted()) {
+//            //System.out.println("hello world");
+//            nonce++;
+//            Pair<byte[], byte[]> pair = hashimotoFull(fullSize, dataset, blockHeaderTruncHash, longToBytes(nonce));
+//            BigInteger h = new BigInteger(1, pair.getRight() /* ?? */);
+//            if (h.compareTo(target) < 0) break;
+//        }
+//        return nonce;
     }
 
     /**

@@ -264,6 +264,7 @@ public class Ethash {
      *  @return the task which may be cancelled. On success returns nonce
      */
     public ListenableFuture<MiningResult> mine(final Block block, int nThreads) {
+        System.out.println("mine function called here");
         return new MineTask(block, nThreads,  new Callable<MiningResult>() {
             AtomicLong taskStartNonce = new AtomicLong(startNonce >= 0 ? startNonce : new Random().nextLong());
             @Override
@@ -272,8 +273,13 @@ public class Ethash {
                 long nonce = getEthashAlgo().mine(getFullSize(), getFullDataset(),
                         sha3(block.getHeader().getEncodedWithoutNonce()),
                         ByteUtil.byteArrayToLong(block.getHeader().getDifficulty()), threadStartNonce);
+                System.out.println("nonce is " );
+                System.out.println(nonce);
                 final Pair<byte[], byte[]> pair = hashimotoLight(block.getHeader(), nonce);
-                return new MiningResult(nonce, pair.getLeft(), block);
+                MiningResult foo =  new MiningResult(nonce, pair.getLeft(), block);
+                System.out.println("foo is ");
+                System.out.println(foo);
+                return foo;
             }
         }).submit();
     }
