@@ -278,7 +278,7 @@ public class Ethash {
                 final Pair<byte[], byte[]> pair = hashimotoLight(block.getHeader(), nonce);
                 MiningResult foo =  new MiningResult(nonce, pair.getLeft(), block);
                 System.out.println("foo is ");
-                System.out.println(foo);
+                System.out.println(foo.block);
                 return foo;
             }
         }).submit();

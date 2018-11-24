@@ -138,7 +138,7 @@ public class BlockMiner {
     public void startMining() {
         isLocalMining = true;
         fireMinerStarted();
-        logger.info("Miner started");
+        logger.info("Miner started FOOBAR");
         restartMining();
     }
 
