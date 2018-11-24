@@ -85,6 +85,7 @@ public class BlockMiner {
     public BlockMiner(final SystemProperties config, final CompositeEthereumListener listener,
                       final Blockchain blockchain, final BlockStore blockStore,
                       final PendingState pendingState) {
+        logger.info("Block miner called");
         this.listener = listener;
         this.config = config;
         this.blockchain = blockchain;
@@ -251,7 +252,7 @@ public class BlockMiner {
         return newMiningBlock;
     }
 
-    protected void restartMining() {
+    protected void  restartMining() {
         Block newMiningBlock = getNewBlockForMining();
 
         synchronized(this) {
