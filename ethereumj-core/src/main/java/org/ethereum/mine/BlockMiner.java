@@ -252,18 +252,23 @@ public class BlockMiner {
         return newMiningBlock;
     }
 
-    protected void  restartMining() {
+    protected void restartMining() {
         Block newMiningBlock = getNewBlockForMining();
+        System.out.println("new mining block");
+        System.out.println(newMiningBlock);
 
         synchronized(this) {
             cancelCurrentBlock();
             miningBlock = newMiningBlock;
 
             if (externalMiner != null) {
+                System.out.println("should not run");
+
                 externalMiner.setListeners(listeners);
                 currentMiningTasks.add(externalMiner.mine(cloneBlock(miningBlock)));
             }
             if (isLocalMining) {
+                System.out.println("is local mining");
                 MinerIfc localMiner = config.getBlockchainConfig()
                         .getConfigForBlock(miningBlock.getNumber())
                         .getMineAlgorithm(config);
@@ -275,6 +280,7 @@ public class BlockMiner {
                 task.addListener(() -> {
                     try {
                         // wow, block mined!
+                        System.out.println("wow block mined");
                         final Block minedBlock = task.get().block;
                         blockMined(minedBlock);
                     } catch (InterruptedException | CancellationException e) {
