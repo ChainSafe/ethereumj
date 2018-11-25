@@ -20,6 +20,8 @@ package org.ethereum.validator;
 import org.ethereum.core.BlockHeader;
 import org.ethereum.util.FastByteComparisons;
 
+import static org.ethereum.util.ByteUtil.byteArrayToLong;
+
 /**
  * Checks proof value against its boundary for the block header
  *
@@ -30,12 +32,21 @@ public class ProofOfWorkRule extends BlockHeaderRule {
 
     @Override
     public ValidationResult validate(BlockHeader header) {
-        byte[] proof = header.calcPowValue();
-        byte[] boundary = header.getPowBoundary();
 
-        if (!header.isGenesis() && FastByteComparisons.compareTo(proof, 0, 32, boundary, 0, 32) > 0) {
-            return fault(String.format("#%d: proofValue > header.getPowBoundary()", header.getNumber()));
+        long nonce = byteArrayToLong(header.getNonce());
+        System.out.println("nonce in pow validate is");
+        System.out.println(nonce);
+        if(nonce != 291) {
+            return fault(String.format("Nonce does not equal 291", header.getNumber()));
         }
+
+
+//        byte[] proof = header.calcPowValue();
+//        byte[] boundary = header.getPowBoundary();
+//
+//        if (!header.isGenesis() && FastByteComparisons.compareTo(proof, 0, 32, boundary, 0, 32) > 0) {
+//            return fault(String.format("#%d: proofValue > header.getPowBoundary()", header.getNumber()));
+//        }
 
         return Success;
     }

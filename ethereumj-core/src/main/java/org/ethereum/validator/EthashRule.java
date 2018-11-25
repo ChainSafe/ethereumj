@@ -30,6 +30,7 @@ import org.slf4j.LoggerFactory;
 
 import java.util.Random;
 
+import static org.ethereum.util.ByteUtil.byteArrayToLong;
 import static org.ethereum.validator.EthashRule.ChainType.main;
 import static org.ethereum.validator.EthashRule.ChainType.reverse;
 import static org.ethereum.validator.EthashRule.Mode.fake;
@@ -149,9 +150,15 @@ public class EthashRule extends BlockHeaderRule {
                 return fault(String.format("#%d: mixHash doesn't match", header.getNumber()));
             }
 
-            if (FastByteComparisons.compareTo(res.getRight(), 0, 32, header.getPowBoundary(), 0, 32) > 0) {
-                return fault(String.format("#%d: proofValue > header.getPowBoundary()", header.getNumber()));
+            long nonce = byteArrayToLong(res.getRight());
+            System.out.println("nonce in ethash validate is");
+            System.out.println(nonce);
+            if(nonce != 291) {
+                return fault(String.format("Nonce does not equal 291", header.getNumber()));
             }
+//            if (FastByteComparisons.compareTo(res.getRight(), 0, 32, header.getPowBoundary(), 0, 32) > 0) {
+//                return fault(String.format("#%d: proofValue > header.getPowBoundary()", header.getNumber()));
+//            }
 
             return Success;
         } catch (Exception e) {

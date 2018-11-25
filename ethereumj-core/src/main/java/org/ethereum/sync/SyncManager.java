@@ -153,6 +153,7 @@ public class SyncManager extends BlockDownloader {
             logger.info("Initializing SyncManager.");
             pool.init(channelManager, blockchain);
 
+            // syncing initialized here?
             if (config.isFastSyncEnabled()) {
                 fastSyncManager.init();
             } else {
@@ -261,6 +262,7 @@ public class SyncManager extends BlockDownloader {
 
     /**
      * Processing the queue adding blocks to the chain.
+     * syncing job
      */
     private void produceQueue() {
 

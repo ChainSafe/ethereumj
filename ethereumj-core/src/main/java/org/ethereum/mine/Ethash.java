@@ -27,8 +27,12 @@ import org.ethereum.core.Block;
 import org.ethereum.core.BlockHeader;
 import org.ethereum.util.ByteUtil;
 import org.ethereum.util.FastByteComparisons;
+import org.ethereum.validator.BlockHeaderRule;
+import org.ethereum.validator.BlockHeaderValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+
+import org.ethereum.config.CommonConfig;
 
 import java.io.*;
 import java.util.Collection;
@@ -48,6 +52,7 @@ import static org.ethereum.mine.EthashListener.DatasetStatus.LIGHT_DATASET_GENER
 import static org.ethereum.mine.EthashListener.DatasetStatus.LIGHT_DATASET_GENERATE_START;
 import static org.ethereum.mine.EthashListener.DatasetStatus.LIGHT_DATASET_LOADED;
 import static org.ethereum.mine.EthashListener.DatasetStatus.LIGHT_DATASET_LOAD_START;
+import static org.ethereum.util.ByteUtil.byteArrayToLong;
 import static org.ethereum.util.ByteUtil.longToBytes;
 import static org.ethereum.mine.MinerIfc.MiningResult;
 
@@ -272,13 +277,21 @@ public class Ethash {
                 long threadStartNonce = taskStartNonce.getAndAdd(0x100000000L);
                 long nonce = getEthashAlgo().mine(getFullSize(), getFullDataset(),
                         sha3(block.getHeader().getEncodedWithoutNonce()),
-                        ByteUtil.byteArrayToLong(block.getHeader().getDifficulty()), threadStartNonce);
+                        byteArrayToLong(block.getHeader().getDifficulty()), threadStartNonce);
                 System.out.println("nonce is " );
                 System.out.println(nonce);
                 final Pair<byte[], byte[]> pair = hashimotoLight(block.getHeader(), nonce);
+                System.out.println("nonce is after hashimotoLight" );
+                System.out.println(nonce);
                 MiningResult foo =  new MiningResult(nonce, pair.getLeft(), block);
-                System.out.println("foo is ");
-                System.out.println(foo.block);
+                System.out.println("foo get Nonce is  should always be 251");
+                System.out.println(byteArrayToLong(foo.block.getNonce()));
+                CommonConfig bar = CommonConfig.getDefault();
+                BlockHeaderValidator car = bar.headerValidator();
+                System.out.println("validation result...");
+                BlockHeaderRule.ValidationResult fun = car.validate(foo.block.getHeader());
+                System.out.println("SUCCESS IN MINE  FUN == ");
+                System.out.println(fun.toString());
                 return foo;
             }
         }).submit();
@@ -307,7 +320,7 @@ public class Ethash {
                 long threadStartNonce = taskStartNonce.getAndAdd(0x100000000L);
                 final long nonce = getEthashAlgo().mineLight(getFullSize(), getCacheLight(),
                         sha3(block.getHeader().getEncodedWithoutNonce()),
-                        ByteUtil.byteArrayToLong(block.getHeader().getDifficulty()), threadStartNonce);
+                        byteArrayToLong(block.getHeader().getDifficulty()), threadStartNonce);
                 final Pair<byte[], byte[]> pair = hashimotoLight(block.getHeader(), nonce);
                 return new MiningResult(nonce, pair.getLeft(), block);
             }

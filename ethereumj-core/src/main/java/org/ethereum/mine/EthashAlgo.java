@@ -216,7 +216,7 @@ public class EthashAlgo {
         } catch(InterruptedException ex) {
             Thread.currentThread().interrupt();
         }
-        return 0x84183c9f;
+        return 0x123;
 //        long nonce = startNonce;
 //        BigInteger target = valueOf(2).pow(256).divide(valueOf(difficulty));
 //        while (!Thread.currentThread().isInterrupted()) {

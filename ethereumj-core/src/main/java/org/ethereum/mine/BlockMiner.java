@@ -20,6 +20,7 @@ package org.ethereum.mine;
 import com.google.common.util.concurrent.ListenableFuture;
 import com.google.common.util.concurrent.MoreExecutors;
 import org.apache.commons.collections4.CollectionUtils;
+import org.ethereum.config.CommonConfig;
 import org.ethereum.config.SystemProperties;
 import org.ethereum.core.*;
 import org.ethereum.db.BlockStore;
@@ -30,6 +31,8 @@ import org.ethereum.facade.EthereumImpl;
 import org.ethereum.listener.CompositeEthereumListener;
 import org.ethereum.listener.EthereumListenerAdapter;
 import org.ethereum.mine.MinerIfc.MiningResult;
+import org.ethereum.validator.BlockHeaderRule;
+import org.ethereum.validator.BlockHeaderValidator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -287,6 +290,8 @@ public class BlockMiner {
                 task.addListener(() -> {
                     try {
                         // wow, block mined!
+                        // this is the listener which is passed in the the block miner
+                        // so the listener listens for mined block here
                         System.out.println("wow block mined");
                         final Block minedBlock = task.get().block;
                         blockMined(minedBlock);
@@ -320,7 +325,13 @@ public class BlockMiner {
         }
 
         fireBlockMined(newBlock);
-        logger.info("Wow, block mined !!!: {}", newBlock.toString());
+        CommonConfig bar = CommonConfig.getDefault();
+        BlockHeaderValidator car = bar.headerValidator();
+        System.out.println("validation resuult...");
+        BlockHeaderRule.ValidationResult fun = car.validate(newBlock.getHeader());
+        logger.info("WE ARE ");
+        logger.info(fun.toString());
+        logger.info("Wow, block mined mod 233333 !!!: {}", newBlock.toString());
 
         lastBlockMinedTime = t;
         miningBlock = null;

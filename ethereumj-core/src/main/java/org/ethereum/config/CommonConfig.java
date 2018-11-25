@@ -302,6 +302,20 @@ public class CommonConfig {
         return new BlockHeaderValidator(rules);
     }
 
+//    @Bean
+//    public BlockHeaderValidator headerGrangeValidator() {
+//
+//        List<BlockHeaderRule> rules = new ArrayList<>(asList(
+//                new GasValueRule(),
+//                new ExtraDataRule(systemProperties()),
+//                GrangeRule.createRegular(),
+//                new GasLimitRule(systemProperties()),
+//                new BlockHashRule(systemProperties())
+//        ));
+//
+//        return new BlockHeaderValidator(rules);
+//    }
+
     @Bean
     public ParentBlockHeaderValidator parentHeaderValidator() {
 
